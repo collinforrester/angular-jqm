@@ -1,30 +1,102 @@
-jqmModule.directive('jqmButton', function() {
+/* globals jqmModule, angular */
+function jqmButtonDirective() {
+  var WRAPPERATTRIBUTE = 'jqm-wrapper';
+
+  var link = function(scope, elm) {
+      var wrapperAttr = elm.parent().attr(WRAPPERATTRIBUTE);
+      if(wrapperAttr !== undefined) {
+        var theme = 'c';
+
+        var hoverState = function() {
+          elm.toggleClass('ui-btn-hover-' + theme);
+          elm.toggleClass('ui-btn-up-' + theme);
+        },
+        pressState = function() {
+          elm.toggleClass('ui-btn-up-' + theme);
+          elm.toggleClass('ui-btn-down-' + theme);
+        };
+
+        elm.bind('mousedown mouseup', pressState);
+        elm.bind('mouseenter mouseleave', hoverState);
+      }
+    };
   return {
-    restrict: 'A',
-    template: '<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span"' +
-      'data-theme="c" data-disabled="false" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-c"'+
-      ' aria-disabled="false">' +
-      '<span class="ui-btn-inner"><span class="ui-btn-text">Button</span></span>' +
-      '<button class="ui-btn-hidden" data-disabled="false"></button>' +
-      '</div>',
-    replace: true,
-    compile: function(cElement) {
-      // TODO: inherit correct theme
-      // For now just using 'c'
-      var theme = 'c';
+    restrict: 'E',
+    compile: function(element, attrs) {
+      var wrapperAttr = element.parent().attr(WRAPPERATTRIBUTE);
 
-      var hoverState = function(e) {
-        cElement.toggleClass('ui-btn-hover-' + theme);
-        cElement.toggleClass('ui-btn-up-' + theme);
-      },
-      pressState = function(e) {
-        cElement.toggleClass('ui-btn-up-' + theme);
-        cElement.toggleClass('ui-btn-down-' + theme);
-      };
+      if(wrapperAttr !== undefined ) {
+        var btnParentClasses = 'ui-btn ui-shadow ui-btn-corner-all ui-btn-up-c',
+            label = element[0].value || element[0].innerText || '';
 
-      cElement.bind('mousedown mouseup', pressState);
-      cElement.bind('mouseenter mouseleave', hoverState);
 
+        // not 100% on this yet on how this should be handled
+        // not being used yet
+        var addAttributes = function(newElement) {
+          for(var attr in attrs) {
+            if(attr.indexOf('$')) {
+              newElement.attr(attr, attrs[attr]);
+            }
+          }
+          if (attrs.ngClick) {
+            newElement.attr("ng-click", attrs.ngClick);
+            attrs.$set("ngClick", null);
+          }
+          return newElement;
+        };
+
+        // nested spans are the same between both elements and can share this
+        var compileSpans = function(label) {
+           return '<span class="ui-btn-inner"><span class="ui-btn-text">'+label+'</span></span>';
+        };
+
+        var compileButton = function() {
+          // btn element needs a wrapper div that gets the
+          // btnParentClasses defined above
+          var wrapperDiv = angular
+            .element('<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" data-disabled="false" aria-disabled="false"/>')
+            .addClass(btnParentClasses);
+          var btn = angular.element(element[0].outerHTML);
+
+          btn.addClass('ui-btn-hidden');
+
+          var newEl = angular
+                        .element(wrapperDiv)
+                        .append(compileSpans(label))
+                        .append(btn);
+
+          element.replaceWith(newEl);
+        };
+        var compileAnchor = function() {
+          // <a href="#" data-role="button" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c">
+          //   <span class="ui-btn-inner">
+          //     <span class="ui-btn-text">Anchor</span>
+          //   </span>
+          // </a>
+
+          // since anchor tag isn't wrapped,
+          // pretty straightfoward: clear the text,
+          // and build the element
+          element.text('');
+          var anchorBtn = angular
+            .element(element[0].outerHTML)
+            .addClass(btnParentClasses)
+            .append(compileSpans(label));
+
+          element.replaceWith(anchorBtn);
+        };
+        // Since the markup for the two is slightly different, approach them differently
+        if(element[0].tagName === 'BUTTON' || element[0].tagName === 'INPUT') {
+          compileButton();
+        } else if(element[0].tagName === 'A' && element.attr('data-role') === 'button') {
+          compileAnchor();
+        }
+        return link;
+      }
     }
   };
-});
+}
+
+jqmModule.directive('input', jqmButtonDirective);
+jqmModule.directive('a', jqmButtonDirective);
+jqmModule.directive('button', jqmButtonDirective);
