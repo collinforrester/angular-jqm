@@ -32,9 +32,11 @@ Directory structure
 
 Install the dependencies: `npm install` and then `./node_modules/.bin/bower install`.
 
-Build it: `./node_modules/.bin/grunt`
+Build it: `grunt`
 
-Auto-Run tests when file change: `./node_modules/.bin/grunt dev`
+Auto-Run tests when file change: `grunt dev`
+
+(this needs grunt-cli installed globally: `npm install grunt-cli -g`)
 
 ### Add source file: 
 
