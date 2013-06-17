@@ -27,7 +27,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['src/**/*','test/**/*'],
-      tasks: ['karma:dev:run']
+      tasks: ['concat','karma:dev:run']
     },
     jshint: {
       options: {
@@ -51,13 +51,14 @@ module.exports = function(grunt) {
         },
         options: {
           globals: {
-            angular: true
+            angular: true,
+            window: true
           }
         }
       },
       test: {
         files: {
-          src: ['test/unit/*.js']
+          src: ['test/unit/**/*.js']
         },
         options: {
           globals: {
@@ -79,7 +80,8 @@ module.exports = function(grunt) {
             angular: true,
             inject: true,
             module: true,
-            dump: true
+            dump: true,
+            testutils: true
           }
         }
       }
@@ -100,7 +102,7 @@ module.exports = function(grunt) {
                 'node_modules/grunt-karma/node_modules/karma/adapter/jasmine.js',
                 'components/angular/angular.js',
                 'components/angular/angular-mocks.js',
-                'test/lib/markupValidator.js'].
+                'test/lib/testutils.js'].
                 concat(srcFiles).
                 concat(['test/**/*Spec.js']).
                 concat([{pattern: 'test/**/*', watched: true, included: false, served: true},
@@ -125,14 +127,31 @@ module.exports = function(grunt) {
           browsers: ['PhantomJS']
         }
       }
+    },
+    changelog: {
+      dest: 'CHANGELOG.md'
     }
   });
 
+  grunt.registerTask('install', 'Prepare development environment', function() {
+      if (!grunt.file.exists('.git/hooks/commit-msg')) {
+          grunt.file.copy('build/validate-commit-msg.js', '.git/hooks/commit-msg');
+          require('fs').chmodSync('.git/hooks/commit-msg', '0755');
+
+          var gitconfig = grunt.file.read('.git/config');
+          gitconfig += '\n' + grunt.file.read('build/git-config');
+          grunt.file.write('.git/config', gitconfig);
+
+          grunt.log.writeln('Installing commit enforce hook, dist merge hook.');
+      }
+  });
+
   grunt.registerTask('dev', ['connect','karma:dev','watch']);
-  grunt.registerTask('default', ['concat','jshint','karma:localBuild']);
+  grunt.registerTask('default', ['install', 'concat','jshint','karma:localBuild']);
   grunt.registerTask('travis', ['concat','jshint','karma:travis']);
 
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-conventional-changelog');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');

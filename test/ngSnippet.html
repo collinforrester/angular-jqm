@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <link type="text/css" rel="stylesheet" href="../components/jquery-mobile/jquery.mobile-1.3.1.css">
+    <script src="../components/angular/angular.js"></script>
+    <script src="../dist/angular-jqm.js"></script>
+
+    <script>
+        var mod = angular.module("app", ["jqm"]);
+        mod.config(function($routeProvider) {
+            $routeProvider.when("/", {
+                redirectTo: "main.html"
+            });
+            $routeProvider.when("/ngSnippet.html", {
+                redirectTo: "main.html"
+            });
+            $routeProvider.when("/:page", {
+                transition: 'slide',
+                templateUrl: function(params) {
+                    return params.page;
+                }
+            });
+        });
+    </script>
+
+    <script type="text/ng-template" id="main.html">
+        <div jqm-page>
+            <h1>Main page</h1>
+            <a href="#/page1.html">To page1</a>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="page1.html">
+        <div jqm-page>
+            <h1>Page 1</h1>
+            <a href="#/page2.html">To page2</a>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="page2.html">
+        <div jqm-page>
+            <h1>Page 2</h1>
+            <a href="#/page3.html">To page3</a>
+        </div>
+    </script>
+    <script type="text/ng-template" id="page3.html">
+        <div jqm-page>
+            <h1>Page 3</h1>
+        </div>
+    </script>
+</head>
+
+<body jqm-viewport>
+
+</body>
+
+</html>

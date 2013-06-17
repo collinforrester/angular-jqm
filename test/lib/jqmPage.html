@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        (function (window) {
+            var fakeTimer = new parent.jasmine.FakeTimer();
+            window.jasmine = {
+                Clock: fakeTimer
+            };
+
+            window.setTimeout = fakeTimer.setTimeout;
+            window.clearTimeout = fakeTimer.clearTimeout;
+            window.setInterval = fakeTimer.setInterval;
+            window.clearInterval = fakeTimer.clearInterval;
+        })(window);
+    </script>
+    <script src="../../components/jquery/jquery.js"></script>
+    <script>
+        (function() {
+            // Disable listening to hashchange and popstate,
+            // but in a way so that jqm does not know it!
+            var _addEventListener = window.addEventListener;
+            window.addEventListener = function(eventName) {
+                if (eventName==='hashchange' || eventName==='popstate') {
+                    return;
+                }
+                return _addEventListener.apply(this,arguments);
+            }
+        })();
+        $(document).bind("mobileinit", function() {
+            // Deactivate pushState so our markup tests are consistent across devices!
+            $.mobile.pushStateEnabled = false;
+            $.mobile.autoInitializePage = false;
+        });
+    </script>
+    <script src="../../components/jquery-mobile/jquery.mobile-1.3.1.js"></script>
+</head>
+
+<body>
+</body>
+
+</html>

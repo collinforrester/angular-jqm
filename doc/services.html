@@ -1,0 +1,27 @@
+<div jqm-page>
+    <h1>Services</h1>
+
+
+    <h2><code>$history</code></h2>
+
+    Methods:
+    <dl>
+        <dt><code>go(relativeIndex)</code></dt>
+        <dd>Goes back/forward in history</dd>
+    </dl>
+
+    Properties:
+    <dl>
+        <dt><code>urlStack</code></dt>
+        <dd>Array of objects, one for every entry in the history. Every entry has a <code>url</code> property.</dd>
+        <dt><code>activeIndex</code></dt>
+        <dd>The index in <code>urlStack</code> of the current history index</dd>
+        <dt><code>previousIndex</code></dt>
+        <dd>The previous index in <code>urlStack</code>. Useful to detect the browser back button.</dd>
+    </dl>
+
+    <h2><code>jqmViewCache</code></h2>
+    This is a cache created by angular's <code>cacheFactory</code> and stores all cached views.
+    It can be used to evict cached views on demand.
+    For the api see <code>cacheFactory</code>.
+</div>

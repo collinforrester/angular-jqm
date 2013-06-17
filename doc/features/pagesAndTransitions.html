@@ -1,0 +1,55 @@
+<div jqm-page>
+    <h1>Pages and transitions</h1>
+
+    <h2><code>jqmViewport</code></h2>
+    The <code>jqmViewport</code> directive defines the element under which
+    the mobile pages are added. This automatically adds <code>ng-view</code> to it.
+
+    <h2>Page transitions</h2>
+
+    <p><em>Defining transitions for pages</em></p>
+    <p>
+    Every route can have the extra property <code>transition</code> with the name of the transition to use
+    when going to that page. Transition names:
+    <ol>
+        <li><a href='#/features/transitions/fade/demo.html'>Fade</a></li>
+        <li><a href='#/features/transitions/slide/demo.html'>Slide</a></li>
+        <li><a href='#/features/transitions/pop/demo.html'>Pop</a></li>
+        <li>... (all transitions of jqm are supported)</li>
+    </ol>
+
+    <p><em>Integration with browser history</em></p>
+    <p>
+    When going back using the browser back button, the transition that was used to show the page is
+    played backwards, ignoring the <code>transition</code> property of the page that is about to be shown.
+    This is the same behavior as in jqm.
+    </p>
+
+    <p><em>Feature detection</em></p>
+    <p>
+    Browsers that don't support 3d animations, all complex transitions (like <code>pop</code>) fall back to the <code>slide</code> transition.
+    This is the same behavior as in jqm.
+    </p>
+
+    <h2>Cached views</h2>
+    <p>
+    The <code>angular-jqm</code> projects adds caching to angular views (<code>ng-view</code>).
+    Cached views allow to cache views including their scopes using the <code>$jqmViewCache</code> service.
+    By this, changing views with routes gets very fast as there is no need to recompile them on every visit.
+    </p>
+
+    <p>
+    To make this work the semantics of routes were changed a little:
+    </p>
+    <ol>
+    <li>If a route for a cached template is activated, the elements and it's scope are taken from the cache.
+        If the template is not yet cached, it is compiled and then added to the cache.</li>
+    <li>If a route is left, it's scope is disconnected, if it's activated, the scope gets reconnected.</li>
+    <li>All templates that are in the <code>$templateCache</code> service are compiled with a new disconnected scope
+        on startup.</li>
+    <li>
+        Route controllers are created only on the first time it's route is activated.
+        Afterwards, they may listen to the <code>$viewContentLoaded</code> event to be notified that
+        their route is activated again.</li>
+    </ol>
+</div>

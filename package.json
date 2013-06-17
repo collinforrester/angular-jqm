@@ -1,34 +1,37 @@
 {
-    "name": "angular-jqm",
-    "description": "Native AngularJS directives for jQuery Mobile. Small footprint, no 3rd party JS dependencies (jQuery, jQuery Mobile JS) required!",
-    "version": "0.0.1-SNAPSHOT",
-    "private": true,
-    "homepage": "https://github.com/opitzconsulting/angular-jqm",
-    "devDependencies": {
-        "grunt": "0.4.x",
-        "grunt-cli": "latest",
-        "grunt-contrib-concat": "latest",
-        "grunt-contrib-connect": "latest",
-        "grunt-contrib-watch": "latest",
-        "grunt-contrib-jshint": "latest",
-        "grunt-karma": "latest",
-        "phantomjs": "latest",
-        "bower": "0.8.x"
-    },
-    "engine": "node 0.8.x",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/opitzconsulting/angular-jqm.git"
-    },
-    "bugs": {
-        "url": "https://github.com/opitzconsulting/angular-jqm/issues"
-    },
-    "licenses": [{
-        "type": "MIT",
-        "url": "https://github.com/opitzconsulting/angular-jqm/blob/master/LICENSE-MIT"
-    }],
-    "keywords": [],
-    "scripts": {
-        "test": "grunt travis --verbose"
+  "name": "angular-jqm",
+  "description": "Native AngularJS directives for jQuery Mobile. Small footprint, no 3rd party JS dependencies (jQuery, jQuery Mobile JS) required!",
+  "version": "0.0.1-SNAPSHOT",
+  "private": true,
+  "homepage": "https://github.com/opitzconsulting/angular-jqm",
+  "devDependencies": {
+    "grunt": "0.4.x",
+    "grunt-cli": "latest",
+    "grunt-contrib-concat": "latest",
+    "grunt-contrib-connect": "latest",
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-karma": "latest",
+    "phantomjs": "latest",
+    "bower": "0.8.x",
+    "grunt-conventional-changelog": "git://github.com/btford/grunt-conventional-changelog"
+  },
+  "engine": "node 0.8.x",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opitzconsulting/angular-jqm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/opitzconsulting/angular-jqm/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/opitzconsulting/angular-jqm/blob/master/LICENSE-MIT"
     }
+  ],
+  "keywords": [],
+  "scripts": {
+    "test": "grunt travis --verbose"
+  }
 }

@@ -1,9 +1,14 @@
-jqmModule.directive('jqmPage', function() {
+jqmModule.directive('jqmPage', ['jqmTheme', function (jqmTheme) {
     return {
         restrict: 'A',
-        compile: function(cElement) {
-            // TODO: ui-body-c: Theming should be customizable!
-            cElement.addClass("ui-page ui-body-c");
+        link: function (scope, iElement) {
+            var theme = jqmTheme(iElement);
+
+            iElement.addClass('ui-page ui-body-' + theme);
+            scope.$on('$viewContentLoaded', function () {
+                // Modify the parent when this page is shown.
+                iElement.parent().addClass("ui-overlay-" + theme);
+            });
         }
     };
-});
+}]);
